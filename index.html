@@ -29,7 +29,10 @@
       margin:0;
       font-family:'Kanit',sans-serif;
       color:#fff;
-      min-height:100vh;
+      height:100dvh;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
       background:
         linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px),
@@ -39,13 +42,20 @@
 
     .wrap{
       max-width:1200px;
+      width:100%;
       margin:0 auto;
-      padding:42px 20px 70px;
+      padding:10px 20px 10px;
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+      min-height:0;
     }
 
     .hero{
       text-align:center;
-      padding:28px 16px 10px;
+      padding:8px 16px 6px;
+      flex-shrink:0;
     }
 
     .pill{
@@ -72,38 +82,44 @@
     }
 
     h1{
-      margin:22px 0 8px;
-      font-size:clamp(42px, 6vw, 76px);
+      margin:6px 0 4px;
+      font-size:clamp(28px, 4vw, 48px);
       line-height:1;
       font-weight:800;
-      text-shadow:0 10px 24px rgba(47,37,84,.35);
+      text-shadow:0 6px 16px rgba(47,37,84,.35);
     }
 
     .sub{
       margin:0;
-      font-size:clamp(16px, 2vw, 24px);
+      font-size:clamp(13px, 1.4vw, 18px);
       font-weight:600;
-      opacity:.95;
+      opacity:.9;
     }
 
     .board{
-      margin-top:42px;
+      margin-top:10px;
+      flex:1;
+      min-height:0;
       display:grid;
       grid-template-columns: 1.15fr .85fr;
-      gap:24px;
-      align-items:start;
+      gap:18px;
+      align-items:stretch;
     }
 
     .panel{
       background:var(--panel);
       color:var(--text);
-      border-radius:32px;
+      border-radius:24px;
       box-shadow:var(--shadow);
       overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
     }
 
     .panel-head{
-      padding:20px 24px;
+      padding:13px 20px;
+      flex-shrink:0;
       display:flex;
       justify-content:space-between;
       align-items:center;
@@ -113,7 +129,7 @@
 
     .panel-head h2{
       margin:0;
-      font-size:22px;
+      font-size:18px;
       font-weight:800;
       color:#374151;
     }
@@ -125,107 +141,181 @@
     }
 
     .top3{
-      padding:28px 22px 26px;
+      padding:16px 14px 0;
       display:grid;
       grid-template-columns: repeat(3, 1fr);
-      gap:18px;
+      gap:16px;
       align-items:end;
+      flex:1;
+      min-height:0;
       background:
-        radial-gradient(circle at top center, rgba(120,92,196,.12), transparent 45%),
-        linear-gradient(180deg, #fbfbfe, #f3f4f9);
+        radial-gradient(ellipse at 50% 0%, rgba(120,92,196,.16) 0%, transparent 55%),
+        linear-gradient(180deg, #f4f5ff, #ecedfa);
+    }
+
+    .podium-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:stretch;
+    }
+
+    /* Icon area — sits naturally above the card, no extra space */
+    .podium-float{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-end;
+      padding-bottom:8px;
+      gap:6px;
     }
 
     .podium-card{
-      border-radius:28px;
-      padding:18px 16px;
+      border-radius:18px 18px 0 0;
+      padding:12px 12px 14px;
       text-align:center;
-      box-shadow:0 10px 24px rgba(59,72,98,.12);
       position:relative;
       overflow:hidden;
-      border:1px solid rgba(0,0,0,.04);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
     }
 
-    .podium-card::before{
+    @keyframes shimmer{
+      0%{ transform:translateX(-120%) skewX(-18deg); }
+      100%{ transform:translateX(300%) skewX(-18deg); }
+    }
+
+    .podium-card.rank-1{
+      min-height:240px;
+      background:linear-gradient(160deg, #fff3c0 0%, #ffd540 45%, #f59e0b 100%);
+      box-shadow:0 -10px 48px rgba(245,158,11,.4), 0 0 0 1.5px rgba(255,215,60,.7);
+    }
+    .podium-card.rank-1::after{
       content:"";
       position:absolute;
-      inset:0;
-      background:linear-gradient(180deg, rgba(255,255,255,.45), rgba(255,255,255,0));
-      pointer-events:none;
+      top:0; left:0;
+      width:35%; height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
+      animation:shimmer 3s ease-in-out infinite;
+    }
+    .podium-card.rank-2{
+      min-height:195px;
+      background:linear-gradient(160deg, #eef0ff 0%, #c5ccf8 45%, #8f9de8 100%);
+      box-shadow:0 -6px 32px rgba(95,111,220,.25), 0 0 0 1.5px rgba(170,185,248,.6);
+    }
+    .podium-card.rank-3{
+      min-height:165px;
+      background:linear-gradient(160deg, #fff0e6 0%, #f5c99a 45%, #e09050 100%);
+      box-shadow:0 -6px 28px rgba(200,130,60,.25), 0 0 0 1.5px rgba(235,180,110,.6);
     }
 
-    .podium-card.rank-1{ min-height:330px; background:linear-gradient(180deg, #fff5cc, #ffe59d); }
-    .podium-card.rank-2{ min-height:285px; background:linear-gradient(180deg, #f6f8fb, #e3e8f0); }
-    .podium-card.rank-3{ min-height:250px; background:linear-gradient(180deg, #fff1e6, #f2c7a7); }
-
-    .medal{
-      width:58px;
-      height:58px;
-      margin:2px auto 12px;
+    /* Rank badge */
+    .rank-badge{
       border-radius:50%;
-      display:grid;
-      place-items:center;
-      font-size:26px;
-      font-weight:800;
-      color:#fff;
-      box-shadow:0 10px 16px rgba(0,0,0,.10);
-    }
-
-    .rank-1 .medal{ background:linear-gradient(180deg, #f7c948, #e6a700); }
-    .rank-2 .medal{ background:linear-gradient(180deg, #cfd7e4, #9aa6b8); }
-    .rank-3 .medal{ background:linear-gradient(180deg, #d89a62, #b56c36); }
-
-    .avatar{
-      width:84px;
-      height:84px;
       margin:0 auto 14px;
-      border-radius:50%;
       display:grid;
       place-items:center;
-      font-size:30px;
-      font-weight:800;
+      font-size:22px;
+      font-weight:900;
+      position:relative;
+      z-index:1;
+      flex-shrink:0;
+    }
+    .rank-badge.badge-1{
+      width:64px; height:64px;
+      background:linear-gradient(145deg, #fffde7, #ffd600);
+      color:#7a4500;
+      box-shadow:0 6px 24px rgba(255,193,7,.55), 0 0 0 3px rgba(255,255,255,.9);
+    }
+    .rank-badge.badge-2{
+      width:54px; height:54px;
+      background:linear-gradient(145deg, #e8ecff, #6979d8);
       color:#fff;
-      background:linear-gradient(135deg, #6f63f6, #d17cc0);
-      box-shadow:0 10px 22px rgba(111,99,246,.28);
-      border:4px solid rgba(255,255,255,.85);
+      box-shadow:0 6px 18px rgba(105,121,216,.45), 0 0 0 3px rgba(255,255,255,.8);
+    }
+    .rank-badge.badge-3{
+      width:50px; height:50px;
+      background:linear-gradient(145deg, #ffe8cc, #c07a30);
+      color:#fff;
+      box-shadow:0 6px 16px rgba(192,122,48,.4), 0 0 0 3px rgba(255,255,255,.8);
+    }
+
+    /* Trophy mini (rank-1 only, above group icon) */
+    .trophy-mini{
+      width:88px; height:88px;
+      margin:0 auto 6px;
+      position:relative; z-index:1; flex-shrink:0;
+    }
+    .trophy-mini svg{ width:100%; height:100%; display:block;
+      filter:drop-shadow(0 3px 8px rgba(0,0,0,.22)); }
+
+    /* Group icon */
+    .team-avatar{
+      margin:0 auto 8px;
+      position:relative; z-index:1;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+    }
+    .podium-float.rank-1 .team-avatar{ width:52px; height:46px; }
+    .podium-float.rank-2 .team-avatar{ width:44px; height:38px; }
+    .podium-float.rank-3 .team-avatar{ width:40px; height:35px; }
+    .team-avatar svg{
+      width:100%; height:100%; display:block;
+      filter:drop-shadow(0 3px 6px rgba(0,0,0,.18));
     }
 
     .team-name{
-      font-size:24px;
-      line-height:1.15;
-      font-weight:800;
-      margin-bottom:8px;
-      color:#243047;
-      word-break:break-word;
+      font-size:20px; line-height:1.2; font-weight:800;
+      margin-bottom:4px; color:#1a2340;
+      word-break:break-word; position:relative; z-index:1;
     }
-
-    .group-tag{
-      display:inline-block;
-      padding:7px 12px;
-      border-radius:999px;
-      font-size:13px;
-      font-weight:700;
-      background:rgba(109,93,252,.12);
-      color:#5b4dd6;
-      margin-bottom:14px;
-    }
+    .rank-1 .team-name{ font-size:23px; color:#4a2800; }
+    .rank-2 .team-name{ color:#1e2a6e; }
+    .rank-3 .team-name{ color:#4a2800; }
 
     .score{
-      font-size:38px;
-      line-height:1;
-      font-weight:800;
-      color:#1f2a44;
+      font-size:38px; line-height:1; font-weight:900;
+      letter-spacing:-.03em; position:relative; z-index:1;
     }
+    .rank-1 .score{ font-size:48px; color:#4a2800; }
+    .rank-2 .score{ color:#1e2a6e; }
+    .rank-3 .score{ color:#4a2800; }
 
     .score small{
-      display:block;
-      margin-top:8px;
-      font-size:14px;
-      color:#6b7280;
-      font-weight:600;
+      display:block; margin-top:4px; font-size:12px;
+      font-weight:700; opacity:.55; letter-spacing:.02em;
+    }
+
+    /* Podium platform */
+    .podium-step{
+      width:100%; border-radius:0 0 5px 5px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:22px; font-weight:900;
+      color:rgba(255,255,255,.95); text-shadow:0 2px 5px rgba(0,0,0,.25);
+    }
+    .podium-step.step-1{
+      height:58px;
+      background:linear-gradient(180deg, #f59e0b, #c47d05);
+      box-shadow:0 8px 22px rgba(196,125,5,.4);
+    }
+    .podium-step.step-2{
+      height:42px;
+      background:linear-gradient(180deg, #7b8de0, #4a5aba);
+      box-shadow:0 6px 16px rgba(74,90,186,.35);
+    }
+    .podium-step.step-3{
+      height:30px;
+      background:linear-gradient(180deg, #c87d3a, #96520c);
+      box-shadow:0 5px 12px rgba(150,82,12,.32);
     }
 
     .list-wrap{
-      padding:10px 18px 18px;
+      padding:6px 14px 10px;
+      flex:1;
+      overflow-y:auto;
+      min-height:0;
     }
 
     .activity-list{
@@ -299,31 +389,32 @@
     }
 
     .mini-stat{
-      padding:18px 22px 22px;
+      padding:10px 14px 12px;
       display:grid;
       grid-template-columns: repeat(3, 1fr);
-      gap:12px;
+      gap:8px;
       background:linear-gradient(180deg, #fafbff, #f3f5fb);
       border-top:1px solid rgba(36,48,71,.08);
+      flex-shrink:0;
     }
 
     .stat{
       background:#fff;
-      border-radius:20px;
-      padding:16px 14px;
+      border-radius:14px;
+      padding:10px 10px;
       text-align:center;
-      box-shadow:0 8px 18px rgba(59,72,98,.08);
+      box-shadow:0 4px 12px rgba(59,72,98,.08);
     }
 
     .stat .label{
-      font-size:13px;
+      font-size:11px;
       color:#6b7280;
       font-weight:700;
-      margin-bottom:8px;
+      margin-bottom:4px;
     }
 
     .stat .value{
-      font-size:24px;
+      font-size:20px;
       color:#243047;
       font-weight:800;
     }
@@ -333,6 +424,91 @@
       text-align:center;
       color:#6b7280;
       font-weight:700;
+    }
+
+    .page-footer{
+      background:#ffffff;
+      border-top:1.5px solid #e8eaf0;
+      box-shadow:0 -2px 12px rgba(0,0,0,.06);
+      padding:10px 32px;
+      text-align:center;
+      flex-shrink:0;
+    }
+
+    .footer-activity{
+      font-size:12px;
+      font-weight:600;
+      color:#6b7280;
+      margin-bottom:2px;
+    }
+
+    .footer-title{
+      font-size:15px;
+      font-weight:800;
+      color:#374151;
+      margin-bottom:2px;
+    }
+
+    .footer-title span{
+      background:linear-gradient(90deg, #6958a6, #c784b7);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+
+    .footer-sub{
+      font-size:13px;
+      font-weight:500;
+      color:#9ca3af;
+    }
+
+    .page-header{
+      position:sticky;
+      top:0;
+      z-index:200;
+      background:#ffffff;
+      padding:0 32px;
+      height:64px;
+      flex-shrink:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:0;
+      border-bottom:1.5px solid #e8eaf0;
+      box-shadow:0 2px 12px rgba(0,0,0,.06);
+    }
+
+    .nav-logo{
+      height:56px;
+      width:auto;
+      object-fit:contain;
+      display:block;
+    }
+
+    .nav-divider{
+      width:1.5px;
+      height:44px;
+      background:#d1d5db;
+      margin:0 24px;
+      flex-shrink:0;
+    }
+
+    .nav-logo-right-wrap{
+      width:52px;
+      height:52px;
+      overflow:hidden;
+      flex-shrink:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .nav-logo-right{
+      width:60px;
+      height:60px;
+      object-fit:cover;
+      object-position:center 30%;
+      display:block;
     }
 
     @media (max-width: 980px){
@@ -369,11 +545,18 @@
   </style>
 </head>
 <body>
+  <nav class="page-header">
+    <img src="logo/pds.png" alt="โรงเรียนสาธิต มหาวิทยาลัยศรีนครินทรวิโรฒ ปทุมวัน" class="nav-logo">
+    <div class="nav-divider"></div>
+    <div class="nav-logo-right-wrap">
+      <img src="logo/app.jpg" alt="ฝ่ายวิชาการ" class="nav-logo-right">
+    </div>
+  </nav>
   <div class="wrap">
     <div class="hero">
       <div class="pill"><span class="dot"></span> BizKids | LEADERBOARD</div>
       <h1>ตารางคะแนน</h1>
-      <p class="sub">แสดงอันดับทีมผู้เข้าแข่งขันแบบเรียลไทม์</p>
+      <p class="sub">การเข้าร่วมกิจกรรมของแต่ละกลุ่มแบบเรียลไทม์</p>
     </div>
 
     <div class="board">
@@ -405,7 +588,7 @@
 
       <div class="panel">
         <div class="panel-head">
-          <h2>อันดับทั้งหมด</h2>
+          <h2>อันดับ 4 - 8</h2>
           <div class="sync">กลุ่มคน / ทีมแข่งขัน</div>
         </div>
         <div class="list-wrap" id="rankingList">
@@ -413,27 +596,13 @@
         </div>
       </div>
     </div>
-
-    <div class="panel activities-panel">
-      <div class="panel-head">
-        <h2>กลุ่มกิจกรรม</h2>
-        <div class="sync">แสดงชื่อกิจกรรมทั้งหมด</div>
-      </div>
-      <div class="list-wrap activity-list">
-        <div class="activity-item">กิจกรรม “The Global Quest: ภารกิจทักทาย สานสายใยรอบโลก”</div>
-        <div class="activity-item">กิจกรรม Hyrox High Health</div>
-        <div class="activity-item">กิจกรรม Junior Investors</div>
-        <div class="activity-item">ฐานเติมเต็ม Growth Mindset ด้วย Radical Candor</div>
-        <div class="activity-item">ฐาน Game of Decisions เกมแห่งการตัดสินใจ</div>
-        <div class="activity-item">ฐาน กระซิบรักบันลือโลก</div>
-        <div class="activity-item">ฐาน บัวลอยลองใจ “ปั้นวิสัยทัศน์ ผ่านงานศิลป์กินได้”</div>
-        <div class="activity-item">ฐาน CER Challenge</div>
-        <div class="activity-item">ฐาน สิบเศียรพันไอเดีย</div>
-        <div class="activity-item">ฐาน Digital Smart Explorer เยาวชนดิจิทัล รู้คิด รู้ใช้ รู้เท่าทันสื่อ</div>
-        <div class="activity-item">ฐาน วิกฤตการณ์ 101 และแสดงแค่คะแนนรวม</div>
-      </div>
-    </div>
   </div>
+
+  <footer class="page-footer">
+    <div class="footer-activity">กิจกรรมส่งเสริมทักษะที่จำเป็น (Essential Skills Set)</div>
+    <div class="footer-title"><span>"BizKids สนุกคิด แผนธุรกิจพันล้าน"</span></div>
+    <div class="footer-sub">ภายใต้โครงการส่งเสริมคุณธรรม จริยธรรมและวิชาการ สำหรับนักเรียนระดับชั้นมัธยมศึกษาปีที่ 1 ปีการศึกษา 2569</div>
+  </footer>
 
   <script>
     const SHEET_ID = '1-6dFkhwmkdLnHcp5AKxW5bhN_iUUZu6rPsytCElT6g0';
@@ -442,6 +611,59 @@
     function getAvatarText(name){
       if(!name) return 'T';
       return name.trim().charAt(0);
+    }
+
+    /* Icon per rank: trophy for #1, 3-person silhouette for #2 & #3 */
+    function groupSvg(rank){
+      const colours = { 1:'#b06500', 2:'#2d3d9e', 3:'#7a3c08' };
+      const f = colours[rank] || colours[3];
+
+      if(rank === 1){
+        /* return trophy SVG (used in .trophy-mini) */
+        return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <rect x="13" y="4" width="74" height="9" rx="3" fill="${f}"/>
+          <path d="M22 13 Q4 13 4 31 Q4 51 22 51" stroke="${f}" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <polygon points="16,51 24,51 24,70 20,63 16,70" fill="${f}"/>
+          <path d="M78 13 Q96 13 96 31 Q96 51 78 51" stroke="${f}" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <polygon points="84,51 76,51 76,70 80,63 84,70" fill="${f}"/>
+          <path d="M22 13 Q20 52 50 66 Q80 52 78 13Z" fill="${f}"/>
+          <path d="M50 27 L53.8 38.2 L65.5 38.2 L56.3 44.8 L59.8 56 L50 49.5 L40.2 56 L43.7 44.8 L34.5 38.2 L46.2 38.2Z" fill="rgba(255,255,255,.75)"/>
+          <rect x="44" y="66" width="12" height="10" rx="1" fill="${f}"/>
+          <rect x="32" y="76" width="36" height="7" rx="2" fill="${f}"/>
+          <rect x="20" y="83" width="60" height="13" rx="4" fill="${f}"/>
+        </svg>`;
+      }
+      /* dummy — not reached for rank 1 but keeps function returning string */
+      if(false) return '';
+
+      /* 3-person silhouette — cubic bezier for clear shoulder shape */
+      function p(cx, hy, hr, bw){
+        const neck = hy + hr;
+        const drop = hr * 0.55;
+        return `<circle cx="${cx}" cy="${hy}" r="${hr}" fill="${f}"/>
+<path d="M${cx-bw} 82 C${cx-bw} ${(neck+drop).toFixed(1)} ${(cx-hr*1.1).toFixed(1)} ${neck} ${cx} ${neck} C${(cx+hr*1.1).toFixed(1)} ${neck} ${cx+bw} ${(neck+drop).toFixed(1)} ${cx+bw} 82Z" fill="${f}"/>`;
+      }
+      return `<svg viewBox="0 0 100 82" xmlns="http://www.w3.org/2000/svg">
+        ${p(21, 26, 13, 22)}
+        ${p(79, 26, 13, 22)}
+        ${p(50, 22, 16, 27)}
+      </svg>`;
+    }
+
+    function peopleSvg(rank){
+      const colours = { 1:'#b06500', 2:'#2d3d9e', 3:'#7a3c08' };
+      const f = colours[rank] || colours[3];
+      function p(cx, hy, hr, bw){
+        const neck = hy + hr;
+        const drop = hr * 0.55;
+        return `<circle cx="${cx}" cy="${hy}" r="${hr}" fill="${f}"/>
+<path d="M${cx-bw} 82 C${cx-bw} ${(neck+drop).toFixed(1)} ${(cx-hr*1.1).toFixed(1)} ${neck} ${cx} ${neck} C${(cx+hr*1.1).toFixed(1)} ${neck} ${cx+bw} ${(neck+drop).toFixed(1)} ${cx+bw} 82Z" fill="${f}"/>`;
+      }
+      return `<svg viewBox="0 0 100 82" xmlns="http://www.w3.org/2000/svg">
+        ${p(21, 26, 13, 22)}
+        ${p(79, 26, 13, 22)}
+        ${p(50, 22, 16, 27)}
+      </svg>`;
     }
 
     function formatNumber(num){
@@ -455,7 +677,7 @@
         `<div class="empty" style="color:#b42318;">${msg}</div>`;
     }
 
-    function renderBoard(teams){
+    function renderBoard(groups, groupTotals = [], groupLabels = []){
       const top3El = document.getElementById('top3');
       const rankingEl = document.getElementById('rankingList');
       const statsEl = document.getElementById('stats');
@@ -464,49 +686,77 @@
       top3El.innerHTML = '';
       rankingEl.innerHTML = '';
 
-      if(!teams.length){
+      if(!groups.length){
         top3El.innerHTML = `<div class="empty" style="grid-column:1/-1;">ไม่พบข้อมูล</div>`;
         rankingEl.innerHTML = `<div class="empty">ไม่พบข้อมูล</div>`;
         return;
       }
 
-      const podiumOrder = [1, 0, 2].filter(i => teams[i]);
+      const trophySvg = `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 14 L6 11 L7 14 L10 15 L7 16 L6 19 L5 16 L2 15Z" fill="#FFF9C4"/>
+        <path d="M30 21 L31 18 L32 21 L35 22 L32 23 L31 26 L30 23 L27 22Z" fill="#FFF9C4"/>
+        <rect x="11" y="3" width="14" height="17" rx="7" fill="#FFD740"/>
+        <path d="M11 7 Q5 7 5 13 Q5 19 11 19" stroke="#FFA000" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M25 7 Q31 7 31 13 Q31 19 25 19" stroke="#FFA000" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M15 7 Q14 12 15 16" stroke="rgba(255,255,255,.55)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <rect x="16" y="20" width="4" height="5" fill="#FFB300"/>
+        <rect x="13" y="25" width="10" height="3" rx="1.5" fill="#FFB300"/>
+        <rect x="10" y="28" width="16" height="4" rx="2" fill="#FF8F00"/>
+      </svg>`;
+      const badgeIcon = [trophySvg, '2', '3'];
+      const podiumOrder = [1, 0, 2].filter(i => groups[i] !== undefined);
       podiumOrder.forEach((idx) => {
-        const team = teams[idx];
+        const group = groups[idx];
         const rank = idx + 1;
+
+        const wrap = document.createElement('div');
+        wrap.className = 'podium-wrap';
+
+        /* icon area — floats in the light background above the card */
+        const floatDiv = document.createElement('div');
+        floatDiv.className = `podium-float rank-${rank}`;
+        floatDiv.innerHTML = `<div class="team-avatar">${peopleSvg(rank)}</div>`;
+
         const card = document.createElement('div');
         card.className = `podium-card rank-${rank}`;
-        card.innerHTML = `
-          <div class="medal">${rank}</div>
-          <div class="avatar">${getAvatarText(team.name)}</div>
-          <div class="team-name">${team.name}</div>
-          <div class="group-tag">กลุ่มคน : ทีมแข่งขัน</div>
-          <div class="score">${formatNumber(team.score)}<small>คะแนน</small></div>
-        `;
-        top3El.appendChild(card);
+        card.innerHTML = rank === 1
+          ? `<div class="trophy-mini">${groupSvg(1)}</div>
+             <div class="team-name">${group.label}</div>
+             <div class="score">${formatNumber(group.score)}<small>คะแนน</small></div>`
+          : `<div class="team-name">${group.label}</div>
+             <div class="score">${formatNumber(group.score)}<small>คะแนน</small></div>`;
+
+        const step = document.createElement('div');
+        step.className = `podium-step step-${rank}`;
+        step.textContent = rank;
+
+        wrap.appendChild(floatDiv);
+        wrap.appendChild(card);
+        wrap.appendChild(step);
+        top3El.appendChild(wrap);
       });
 
-      teams.forEach((team, index) => {
+      groups.slice(3).forEach((group, i) => {
+        const rank = i + 4;
         const row = document.createElement('div');
         row.className = 'list-row';
         row.innerHTML = `
-          <div class="rank-chip">${index + 1}</div>
+          <div class="rank-chip">${rank}</div>
           <div class="list-main">
-            <div class="list-name">${team.name}</div>
-            <div class="list-group">กลุ่มคน : ทีมแข่งขัน</div>
+            <div class="list-name">${group.label}</div>
           </div>
-          <div class="list-score">${formatNumber(team.score)}</div>
+          <div class="list-score">${formatNumber(group.score)}</div>
         `;
         rankingEl.appendChild(row);
       });
 
-      const totalScore = teams.reduce((sum, t) => sum + Number(t.score || 0), 0);
-      const maxScore = teams[0]?.score || 0;
+      const totalScore = groups.reduce((sum, g) => sum + Number(g.score || 0), 0);
+      const maxScore = groups[0]?.score || 0;
 
       statsEl.innerHTML = `
         <div class="stat">
-          <div class="label">จำนวนทีม</div>
-          <div class="value">${teams.length}</div>
+          <div class="label">จำนวนกลุ่ม</div>
+          <div class="value">${groups.length}</div>
         </div>
         <div class="stat">
           <div class="label">คะแนนสูงสุด</div>
@@ -529,29 +779,34 @@
         }
 
         const rows = data.table.rows || [];
-        const teams = [];
+        const groupLabels = Array(8).fill('');
+        const groupTotals = Array(8).fill(0);
 
-        rows.forEach((row, index) => {
-          if(!row || !row.c) return;
-
-          const name = row.c[0]?.v ? String(row.c[0].v).trim() : '';
-          let score = row.c[1]?.v ?? 0;
-
-          if(typeof score === 'string'){
-            score = score.replace(/,/g, '').trim();
+        if(rows[0] && rows[0].c){
+          for(let i = 0; i < 8; i += 1){
+            const raw = rows[0].c[i]?.v;
+            const labelValue = raw ? String(raw).trim() : `${i + 1}`;
+            groupLabels[i] = `กลุ่มที่ ${labelValue}`;
           }
+        }
 
-          score = Number(score);
+        if(rows[15] && rows[15].c){
+          for(let i = 0; i < 8; i += 1){
+            const value = rows[15].c[i]?.v ?? 0;
+            const parsedValue = typeof value === 'string'
+              ? Number(String(value).replace(/,/g, '').trim())
+              : Number(value);
+            groupTotals[i] = Number.isNaN(parsedValue) ? 0 : parsedValue;
+          }
+        }
 
-          if(!name) return;
-          if(name === 'ชื่อทีม' || name === 'กลุ่ม') return;
-          if(Number.isNaN(score)) score = 0;
+        const groups = groupLabels.map((label, index) => ({
+          label,
+          score: groupTotals[index] || 0,
+        }));
 
-          teams.push({ name, score });
-        });
-
-        teams.sort((a,b) => b.score - a.score);
-        renderBoard(teams);
+        groups.sort((a,b) => b.score - a.score);
+        renderBoard(groups, groupTotals, groupLabels);
       }catch(err){
         showError('เกิดข้อผิดพลาด: ' + err.message);
       }
@@ -572,7 +827,7 @@
         showError('ไม่สามารถเชื่อมต่อ Google Sheet ได้ กรุณาตรวจสอบการแชร์ไฟล์');
       };
 
-      const query = encodeURIComponent(`select A, J`);
+      const query = encodeURIComponent(`select B, C, D, E, F, G, H, I`);
       script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_NAME)}&tq=${query}&tqx=out:json&_=${Date.now()}`;
       document.body.appendChild(script);
     }
