@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(export PATH=\"/opt/homebrew/bin:$PATH\")",
+      "Bash(pdfinfo \"/Users/kittiyakuldee/.claude/projects/-Users-kittiyakuldee-Downloads-client/f3114acb-43d7-40f3-a909-131265a0f615/tool-results/webfetch-1775185702315-77vz04.pdf\")",
+      "Bash(tesseract --version)",
+      "Bash(tesseract --list-langs)",
+      "Bash(brew install:*)",
+      "Bash(ls /tmp/file_*.pdf)",
+      "Bash(ls /tmp/pdf_*.png)",
+      "Bash(ls p235*.png)",
+      "Bash(tesseract p235-01.png /tmp/out235_1 -l tha+eng)",
+      "Read(//tmp/**)",
+      "Bash(python3 /tmp/replace_tcas.py)",
+      "Bash(python3 /tmp/add_tcas.py)"
+    ]
+  }
+}
