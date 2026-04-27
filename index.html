@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard | BizKids</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#3f4a78;
+      --bg2:#6958a6;
+      --bg3:#c784b7;
+      --panel:#ffffffee;
+      --text:#243047;
+      --muted:#6b7280;
+      --line:rgba(255,255,255,.12);
+      --gold:#f6c453;
+      --silver:#d7dce5;
+      --bronze:#d79b6b;
+      --shadow:0 16px 40px rgba(31,41,55,.18);
+      --radius:26px;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:'Kanit',sans-serif;
+      color:#fff;
+      min-height:100vh;
+      background:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, var(--bg1), var(--bg2), var(--bg3));
+      background-size: 70px 70px, 70px 70px, cover;
+    }
+
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:42px 20px 70px;
+    }
+
+    .hero{
+      text-align:center;
+      padding:28px 16px 10px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 20px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.22);
+      background:rgba(255,255,255,.10);
+      backdrop-filter: blur(10px);
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#f2c2e4;
+      box-shadow:0 0 12px #f2c2e4;
+    }
+
+    h1{
+      margin:22px 0 8px;
+      font-size:clamp(42px, 6vw, 76px);
+      line-height:1;
+      font-weight:800;
+      text-shadow:0 10px 24px rgba(47,37,84,.35);
+    }
+
+    .sub{
+      margin:0;
+      font-size:clamp(16px, 2vw, 24px);
+      font-weight:600;
+      opacity:.95;
+    }
+
+    .board{
+      margin-top:42px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:24px;
+      align-items:start;
+    }
+
+    .panel{
+      background:var(--panel);
+      color:var(--text);
+      border-radius:32px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .panel-head{
+      padding:20px 24px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:1px solid rgba(36,48,71,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(247,248,252,.92));
+    }
+
+    .panel-head h2{
+      margin:0;
+      font-size:22px;
+      font-weight:800;
+      color:#374151;
+    }
+
+    .sync{
+      font-size:13px;
+      font-weight:600;
+      color:#667085;
+    }
+
+    .top3{
+      padding:28px 22px 26px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:18px;
+      align-items:end;
+      background:
+        radial-gradient(circle at top center, rgba(120,92,196,.12), transparent 45%),
+        linear-gradient(180deg, #fbfbfe, #f3f4f9);
+    }
+
+    .podium-card{
+      border-radius:28px;
+      padding:18px 16px;
+      text-align:center;
+      box-shadow:0 10px 24px rgba(59,72,98,.12);
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(0,0,0,.04);
+    }
+
+    .podium-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,.45), rgba(255,255,255,0));
+      pointer-events:none;
+    }
+
+    .podium-card.rank-1{ min-height:330px; background:linear-gradient(180deg, #fff5cc, #ffe59d); }
+    .podium-card.rank-2{ min-height:285px; background:linear-gradient(180deg, #f6f8fb, #e3e8f0); }
+    .podium-card.rank-3{ min-height:250px; background:linear-gradient(180deg, #fff1e6, #f2c7a7); }
+
+    .medal{
+      width:58px;
+      height:58px;
+      margin:2px auto 12px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      font-size:26px;
+      font-weight:800;
+      color:#fff;
+      box-shadow:0 10px 16px rgba(0,0,0,.10);
+    }
+
+    .rank-1 .medal{ background:linear-gradient(180deg, #f7c948, #e6a700); }
+    .rank-2 .medal{ background:linear-gradient(180deg, #cfd7e4, #9aa6b8); }
+    .rank-3 .medal{ background:linear-gradient(180deg, #d89a62, #b56c36); }
+
+    .avatar{
+      width:84px;
+      height:84px;
+      margin:0 auto 14px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      font-size:30px;
+      font-weight:800;
+      color:#fff;
+      background:linear-gradient(135deg, #6f63f6, #d17cc0);
+      box-shadow:0 10px 22px rgba(111,99,246,.28);
+      border:4px solid rgba(255,255,255,.85);
+    }
+
+    .team-name{
+      font-size:24px;
+      line-height:1.15;
+      font-weight:800;
+      margin-bottom:8px;
+      color:#243047;
+      word-break:break-word;
+    }
+
+    .group-tag{
+      display:inline-block;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:700;
+      background:rgba(109,93,252,.12);
+      color:#5b4dd6;
+      margin-bottom:14px;
+    }
+
+    .score{
+      font-size:38px;
+      line-height:1;
+      font-weight:800;
+      color:#1f2a44;
+    }
+
+    .score small{
+      display:block;
+      margin-top:8px;
+      font-size:14px;
+      color:#6b7280;
+      font-weight:600;
+    }
+
+    .list-wrap{
+      padding:10px 18px 18px;
+    }
+
+    .activity-list{
+      display:grid;
+      gap:10px;
+      padding:10px 18px 18px;
+    }
+
+    .activity-item{
+      padding:14px 16px;
+      border-radius:18px;
+      background:#f8f9ff;
+      color:#243047;
+      font-size:16px;
+      line-height:1.4;
+      box-shadow:0 6px 16px rgba(59,72,98,.08);
+      border:1px solid rgba(36,48,71,.08);
+    }
+
+    .list-row{
+      display:grid;
+      grid-template-columns: 72px 1fr auto;
+      align-items:center;
+      gap:14px;
+      padding:14px 10px;
+      border-bottom:1px solid rgba(36,48,71,.07);
+    }
+
+    .list-row:last-child{ border-bottom:none; }
+
+    .rank-chip{
+      width:56px;
+      height:56px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg, #f2f4f8, #e8ebf2);
+      color:#5b4dd6;
+      font-size:22px;
+      font-weight:800;
+    }
+
+    .list-main{
+      min-width:0;
+    }
+
+    .list-name{
+      color:#23314c;
+      font-size:20px;
+      font-weight:700;
+      line-height:1.2;
+      margin-bottom:6px;
+      word-break:break-word;
+    }
+
+    .list-group{
+      display:inline-block;
+      padding:5px 10px;
+      border-radius:999px;
+      background:#eef2ff;
+      color:#5562d9;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .list-score{
+      color:#1f2a44;
+      font-size:28px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .mini-stat{
+      padding:18px 22px 22px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+      background:linear-gradient(180deg, #fafbff, #f3f5fb);
+      border-top:1px solid rgba(36,48,71,.08);
+    }
+
+    .stat{
+      background:#fff;
+      border-radius:20px;
+      padding:16px 14px;
+      text-align:center;
+      box-shadow:0 8px 18px rgba(59,72,98,.08);
+    }
+
+    .stat .label{
+      font-size:13px;
+      color:#6b7280;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .stat .value{
+      font-size:24px;
+      color:#243047;
+      font-weight:800;
+    }
+
+    .empty{
+      padding:40px 20px;
+      text-align:center;
+      color:#6b7280;
+      font-weight:700;
+    }
+
+    @media (max-width: 980px){
+      .board{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 760px){
+      .top3{
+        grid-template-columns:1fr;
+      }
+
+      .podium-card.rank-1,
+      .podium-card.rank-2,
+      .podium-card.rank-3{
+        min-height:auto;
+      }
+
+      .list-row{
+        grid-template-columns: 58px 1fr;
+      }
+
+      .list-score{
+        grid-column:2/3;
+        justify-self:end;
+        margin-top:8px;
+      }
+
+      .mini-stat{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div class="pill"><span class="dot"></span> BizKids | LEADERBOARD</div>
+      <h1>ตารางคะแนน</h1>
+      <p class="sub">แสดงอันดับทีมผู้เข้าแข่งขันแบบเรียลไทม์</p>
+    </div>
+
+    <div class="board">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>อันดับ 1 - 3</h2>
+          <div class="sync" id="lastUpdate">กำลังโหลดข้อมูล...</div>
+        </div>
+
+        <div class="top3" id="top3">
+          <div class="empty" style="grid-column:1/-1;">กำลังโหลดข้อมูล...</div>
+        </div>
+
+        <div class="mini-stat" id="stats">
+          <div class="stat">
+            <div class="label">จำนวนทีม</div>
+            <div class="value">-</div>
+          </div>
+          <div class="stat">
+            <div class="label">คะแนนสูงสุด</div>
+            <div class="value">-</div>
+          </div>
+          <div class="stat">
+            <div class="label">คะแนนรวม</div>
+            <div class="value">-</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>อันดับทั้งหมด</h2>
+          <div class="sync">กลุ่มคน / ทีมแข่งขัน</div>
+        </div>
+        <div class="list-wrap" id="rankingList">
+          <div class="empty">กำลังโหลดข้อมูล...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel activities-panel">
+      <div class="panel-head">
+        <h2>กลุ่มกิจกรรม</h2>
+        <div class="sync">แสดงชื่อกิจกรรมทั้งหมด</div>
+      </div>
+      <div class="list-wrap activity-list">
+        <div class="activity-item">กิจกรรม “The Global Quest: ภารกิจทักทาย สานสายใยรอบโลก”</div>
+        <div class="activity-item">กิจกรรม Hyrox High Health</div>
+        <div class="activity-item">กิจกรรม Junior Investors</div>
+        <div class="activity-item">ฐานเติมเต็ม Growth Mindset ด้วย Radical Candor</div>
+        <div class="activity-item">ฐาน Game of Decisions เกมแห่งการตัดสินใจ</div>
+        <div class="activity-item">ฐาน กระซิบรักบันลือโลก</div>
+        <div class="activity-item">ฐาน บัวลอยลองใจ “ปั้นวิสัยทัศน์ ผ่านงานศิลป์กินได้”</div>
+        <div class="activity-item">ฐาน CER Challenge</div>
+        <div class="activity-item">ฐาน สิบเศียรพันไอเดีย</div>
+        <div class="activity-item">ฐาน Digital Smart Explorer เยาวชนดิจิทัล รู้คิด รู้ใช้ รู้เท่าทันสื่อ</div>
+        <div class="activity-item">ฐาน วิกฤตการณ์ 101 และแสดงแค่คะแนนรวม</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SHEET_ID = '1-6dFkhwmkdLnHcp5AKxW5bhN_iUUZu6rPsytCElT6g0';
+    const SHEET_NAME = 'Sheet1'; // ถ้าชีทชื่ออื่น ให้เปลี่ยนตรงนี้
+
+    function getAvatarText(name){
+      if(!name) return 'T';
+      return name.trim().charAt(0);
+    }
+
+    function formatNumber(num){
+      return Number(num || 0).toLocaleString('th-TH');
+    }
+
+    function showError(msg){
+      document.getElementById('top3').innerHTML =
+        `<div class="empty" style="grid-column:1/-1;color:#b42318;">${msg}</div>`;
+      document.getElementById('rankingList').innerHTML =
+        `<div class="empty" style="color:#b42318;">${msg}</div>`;
+    }
+
+    function renderBoard(teams){
+      const top3El = document.getElementById('top3');
+      const rankingEl = document.getElementById('rankingList');
+      const statsEl = document.getElementById('stats');
+      const lastUpdateEl = document.getElementById('lastUpdate');
+
+      top3El.innerHTML = '';
+      rankingEl.innerHTML = '';
+
+      if(!teams.length){
+        top3El.innerHTML = `<div class="empty" style="grid-column:1/-1;">ไม่พบข้อมูล</div>`;
+        rankingEl.innerHTML = `<div class="empty">ไม่พบข้อมูล</div>`;
+        return;
+      }
+
+      const podiumOrder = [1, 0, 2].filter(i => teams[i]);
+      podiumOrder.forEach((idx) => {
+        const team = teams[idx];
+        const rank = idx + 1;
+        const card = document.createElement('div');
+        card.className = `podium-card rank-${rank}`;
+        card.innerHTML = `
+          <div class="medal">${rank}</div>
+          <div class="avatar">${getAvatarText(team.name)}</div>
+          <div class="team-name">${team.name}</div>
+          <div class="group-tag">กลุ่มคน : ทีมแข่งขัน</div>
+          <div class="score">${formatNumber(team.score)}<small>คะแนน</small></div>
+        `;
+        top3El.appendChild(card);
+      });
+
+      teams.forEach((team, index) => {
+        const row = document.createElement('div');
+        row.className = 'list-row';
+        row.innerHTML = `
+          <div class="rank-chip">${index + 1}</div>
+          <div class="list-main">
+            <div class="list-name">${team.name}</div>
+            <div class="list-group">กลุ่มคน : ทีมแข่งขัน</div>
+          </div>
+          <div class="list-score">${formatNumber(team.score)}</div>
+        `;
+        rankingEl.appendChild(row);
+      });
+
+      const totalScore = teams.reduce((sum, t) => sum + Number(t.score || 0), 0);
+      const maxScore = teams[0]?.score || 0;
+
+      statsEl.innerHTML = `
+        <div class="stat">
+          <div class="label">จำนวนทีม</div>
+          <div class="value">${teams.length}</div>
+        </div>
+        <div class="stat">
+          <div class="label">คะแนนสูงสุด</div>
+          <div class="value">${formatNumber(maxScore)}</div>
+        </div>
+        <div class="stat">
+          <div class="label">คะแนนรวม</div>
+          <div class="value">${formatNumber(totalScore)}</div>
+        </div>
+      `;
+
+      const now = new Date();
+      lastUpdateEl.textContent = 'อัปเดตล่าสุด ' + now.toLocaleTimeString('th-TH');
+    }
+
+    function parseSheetResponse(data){
+      try{
+        if(data.status === 'error'){
+          throw new Error(data.errors?.[0]?.message || 'โหลดข้อมูลไม่สำเร็จ');
+        }
+
+        const rows = data.table.rows || [];
+        const teams = [];
+
+        rows.forEach((row, index) => {
+          if(!row || !row.c) return;
+
+          const name = row.c[0]?.v ? String(row.c[0].v).trim() : '';
+          let score = row.c[1]?.v ?? 0;
+
+          if(typeof score === 'string'){
+            score = score.replace(/,/g, '').trim();
+          }
+
+          score = Number(score);
+
+          if(!name) return;
+          if(name === 'ชื่อทีม' || name === 'กลุ่ม') return;
+          if(Number.isNaN(score)) score = 0;
+
+          teams.push({ name, score });
+        });
+
+        teams.sort((a,b) => b.score - a.score);
+        renderBoard(teams);
+      }catch(err){
+        showError('เกิดข้อผิดพลาด: ' + err.message);
+      }
+    }
+
+    function fetchScores(){
+      const oldScript = document.getElementById('gviz-script');
+      if(oldScript) oldScript.remove();
+
+      window.google = window.google || {};
+      window.google.visualization = window.google.visualization || {};
+      window.google.visualization.Query = window.google.visualization.Query || {};
+      window.google.visualization.Query.setResponse = parseSheetResponse;
+
+      const script = document.createElement('script');
+      script.id = 'gviz-script';
+      script.onerror = function(){
+        showError('ไม่สามารถเชื่อมต่อ Google Sheet ได้ กรุณาตรวจสอบการแชร์ไฟล์');
+      };
+
+      const query = encodeURIComponent(`select A, J`);
+      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_NAME)}&tq=${query}&tqx=out:json&_=${Date.now()}`;
+      document.body.appendChild(script);
+    }
+
+    fetchScores();
+    setInterval(fetchScores, 5000);
+  </script>
+</body>
+</html>
